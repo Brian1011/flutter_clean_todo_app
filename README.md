@@ -8,3 +8,6 @@ This project is a starting point for a Flutter application.
 ## Generate models 
 flutter packages pub run build_runner build --delete-conflicting-outputs
 flutter pub run build_runner watch
+
+## Versions
+Flutter: 3.16.6
