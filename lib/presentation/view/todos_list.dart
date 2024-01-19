@@ -32,11 +32,13 @@ class TodosList extends ConsumerWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          context.go('/todos/add');
+          context.push('/todos/new');
         },
-        child: const Icon(Icons.add),
+        tooltip: 'Add Todo',
+        icon: const Icon(Icons.add),
+        label: const Text('Add Todo'),
       ),
     );
   }

@@ -10,6 +10,7 @@ class TodosRepositoryImpl extends TodosRepository {
   late final String path = 'todos.json';
 
   TodosRepositoryImpl(this.files);
+
   @override
   Future<void> deleteAllTodos() async {
     await files.delete(path);
