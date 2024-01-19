@@ -8,7 +8,7 @@ class TodosList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todos = ref.watch(getTodosProvider);
+    final todos = ref.watch(todosListProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('todos'),
