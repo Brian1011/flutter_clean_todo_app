@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_todo_app/presentation/viewmodel/module.dart';
+import 'package:flutter_clean_todo_app/presentation/widgets/extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shortid/shortid.dart';
@@ -18,8 +19,7 @@ class _TodosNewState extends ConsumerState<TodosNew> {
   final descriptionController = TextEditingController();
   bool isCompleted = false;
   final formKey = GlobalKey<FormState>();
-  late final saveTodoUseCase = ref.read(saveTodoProvider);
-  late final todoList = ref.read(todoListModel);
+  late final model = ref.read(todoListModel);
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +82,8 @@ class _TodosNewState extends ConsumerState<TodosNew> {
 
               final messenger = ScaffoldMessenger.of(context);
               final router = GoRouter.of(context);
-              await saveTodoUseCase.execute(todo);
+              await model.save(todo);
               messenger.toast('Todo saved');
-              await todoList.loadTodos();
               if (router.canPop()) router.pop();
             }
           },
@@ -92,16 +91,5 @@ class _TodosNewState extends ConsumerState<TodosNew> {
           icon: const Icon(Icons.save),
           label: const Text('Save Todo'),
         ));
-  }
-}
-
-extension on ScaffoldMessengerState {
-  void toast(String message) {
-    showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 1),
-      ),
-    );
   }
 }
