@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_clean_todo_app/presentation/viewmodel/module.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shortid/shortid.dart';
@@ -18,6 +19,7 @@ class _TodosNewState extends ConsumerState<TodosNew> {
   bool isCompleted = false;
   final formKey = GlobalKey<FormState>();
   late final saveTodoUseCase = ref.read(saveTodoProvider);
+  late final todoList = ref.read(todoListModel);
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +84,7 @@ class _TodosNewState extends ConsumerState<TodosNew> {
               final router = GoRouter.of(context);
               await saveTodoUseCase.execute(todo);
               messenger.toast('Todo saved');
+              await todoList.loadTodos();
               if (router.canPop()) router.pop();
             }
           },

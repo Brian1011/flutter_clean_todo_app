@@ -1,17 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../domain/domain.dart';
-
-part 'module.g.dart';
 
 final todoListNotifier = ChangeNotifierProvider<ValueNotifier<Todos>>(
     (ref) => ValueNotifier(const Todos(values: [])));
 
-@riverpod
-Future<Todos> todosList(TodosListRef ref) async {
-  final usecase = ref.watch(getTodosProvider);
-  final items = await usecase.execute();
-  return items;
+class TodosStateNotifier extends StateNotifier<Todos> {
+  TodosStateNotifier(this.ref) : super(const Todos(values: [])) {
+    loadTodos();
+  }
+
+  final Ref ref;
+  late final getTodos = ref.read(getTodosProvider);
+
+  Future<void> loadTodos() async {
+    state = await getTodos.execute();
+  }
 }
+
+final todosListState = StateNotifierProvider<TodosStateNotifier, Todos>(
+    (ref) => TodosStateNotifier(ref));
+
+final todoListModel =
+    Provider<TodosStateNotifier>((ref) => ref.watch(todosListState.notifier));
